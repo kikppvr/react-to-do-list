@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from "react";
 
-function App() {
+function TodoList(){
+  const [items, setItems] = useState([]);
+  const [newItem, setNewItem] = useState("");
+
+
+  const handleSubmit = (event) => {
+      event.preventDefault();
+      setItems([...items, newItem]);
+      setNewItem("");
+  };
+
+  const handleDelete = (index) => {
+      const newItem = [...items];
+      newItem.splice(index,1);
+      setItems(newItem);
+  }
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h2>To do List</h2>
+      <form onSubmit={handleSubmit}>
+          <input 
+          type="text" 
+          value={newItem} 
+          onChange={(event) => setNewItem(event.target.value)}
+          />
+          <button type="submit">Add Item</button>
+      </form>
+
+      <ul>
+          {items.map((item, index) => (
+            <li key={index}>
+              <span> {item}</span>
+              <button onClick={() => handleDelete(index)}>Delete</button>
+            </li>
+          ))}
+      </ul>
     </div>
   );
 }
 
-export default App;
+
+export default TodoList;
